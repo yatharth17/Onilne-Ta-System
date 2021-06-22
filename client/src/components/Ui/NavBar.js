@@ -4,6 +4,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -21,8 +23,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function NavBar() {
+export default function NavBar(props) {
   const classes = useStyles();
+  const { setUserEmail, setHome } = props;
+
+  const handleChange = () => {
+    setUserEmail('');
+    setHome('/');
+  }
 
   return (
     <div className={classes.root}>
@@ -31,7 +39,7 @@ export default function NavBar() {
           <Typography variant="h6" className={classes.title}>
             Coding Ninjas
           </Typography>
-          <Button color="inherit">Logout</Button>
+          <Button onClick={handleChange} startIcon={<ExitToAppIcon />} color="inherit">Logout</Button>
         </Toolbar>
       </AppBar>
     </div>

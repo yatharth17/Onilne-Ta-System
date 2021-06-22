@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
 import Form from './components/Student/form'
 import TA from './components/TA/TA'
 import SolveDoubt from './components/TA/SolveDoubt'
@@ -10,12 +10,14 @@ const App = () => {
 
 const [currentId, setCurrentId] = useState(null);
 const [currentAcceptDoubtId, setCurrentAcceptDoubtId] = useState(null);
-
+const [home, setHome] = useState('/');
 
 const [studentName, setStudentName] = useState("");
 const [studentEmail, setStudentEmail] = useState("");
 const [TaName, setTaName] = useState("");
 const [TaEmail, setTaEmail] = useState("");
+const [TeacherName, setTeacherName] = useState("");
+const [TeacherEmail, setTeacherEmail] = useState("");
 
 
 const [taId, setTaId] = useState(null)
@@ -34,6 +36,7 @@ const [taId, setTaId] = useState(null)
                           studentName={studentName}
                           studentEmail={studentEmail}
                           setStudentEmail={setStudentEmail}
+                          setHome={setHome}
                           />
                           
                         )}
@@ -51,6 +54,7 @@ const [taId, setTaId] = useState(null)
                           setTaEmail={setTaEmail}
                           taId={taId}
                           setTaId={setTaId}
+                          setHome={setHome}
                           />
                         )}
                         />
@@ -65,6 +69,7 @@ const [taId, setTaId] = useState(null)
                           TaName={TaName}
                           taId={taId}
                           setTaId={setTaId}
+                          setHome={setHome}
                           />
                         )}
                         />
@@ -72,7 +77,14 @@ const [taId, setTaId] = useState(null)
                         <Route exact
                          path="/TeachersDashboard"
                          render={(props) => (
-                          <TeachersDashboard {...props} />
+                          <TeachersDashboard {...props} 
+                          TeacherEmail={TeacherEmail}
+                          TeacherName={TeacherName}
+                          setTeacherEmail={setTeacherEmail}
+                          setTeacherName={setTeacherName}
+                          home={home}
+                          setHome={setHome}
+                          />
                         )}
                         />
 
@@ -80,14 +92,37 @@ const [taId, setTaId] = useState(null)
                          path="/"
                          render={(props) => (
                           <Home {...props}
-                          studentName={studentName}
                           setStudentName={setStudentName}
-                          studentEmail={studentEmail}
                           setStudentEmail={setStudentEmail}
-                          TaName={TaName}
                           setTaName={setTaName}
-                          TaEmail={TaEmail}
                           setTaEmail={setTaEmail}
+                          home={home}
+                          setHome={setHome}
+                          setTeacherName={setTeacherName}
+                          setTeacherEmail={setTeacherEmail}
+                          type='login'
+                          />
+                        )}
+                        />
+
+                        <Route exact
+                          path= "/login">
+                            <Redirect to='/'></Redirect>
+                        </Route>
+
+                        <Route exact
+                         path="/register"
+                         render={(props) => (
+                          <Home {...props}
+                          setStudentName={setStudentName}
+                          setStudentEmail={setStudentEmail}
+                          setTaName={setTaName}
+                          setTaEmail={setTaEmail}
+                          home={home}
+                          setHome={setHome}
+                          setTeacherName={setTeacherName}
+                          setTeacherEmail={setTeacherEmail}
+                          type='register'
                           />
                         )}
                         />

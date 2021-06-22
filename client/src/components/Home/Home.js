@@ -1,22 +1,34 @@
 import React from 'react'
 import FullWidthTabs from './TabPanel'
+import Register from './Register'
+// import { useHistory } from 'react-router-dom'
 
-export default function Home({studentName,
-     setStudentName, studentEmail, setStudentEmail,
-     TaName, setTaName, TaEmail, setTaEmail
-    }) {
+export default function Home({
+     setStudentName, setStudentEmail,
+     setTaName, setTaEmail, type, home, setHome, 
+     setTeacherName, setTeacherEmail }) {
+    
+    // const history = useHistory;
     return (
         <div>
-            <FullWidthTabs 
-            studentName={studentName}
-            setStudentName={setStudentName}
-            studentEmail={studentEmail}
-            setStudentEmail={setStudentEmail}
-            TaName={TaName}
-            setTaName={setTaName}
-            TaEmail={TaEmail}
-            setTaEmail={setTaEmail}
-            />
+            {/* {console.log(home)} */}
+            {
+                // home !== '/'?
+                // null://history.push(home):
+                type === 'login'?
+                    <FullWidthTabs 
+                    setStudentName={setStudentName}
+                    setStudentEmail={setStudentEmail}
+                    setTaName={setTaName}
+                    setTaEmail={setTaEmail}
+                    setHome={setHome}
+                    setTeacherName={setTeacherName}
+                    setTeacherEmail={setTeacherEmail}
+                    />:
+                    <Register 
+                    setHome={setHome}
+                    />
+            }
         </div>
     )
 }

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme)=>({
 }));
 
 
-const Form = ({currentId, setCurrentId, studentName, studentEmail, setStudentEmail}) => {
+const Form = ({ currentId, setCurrentId, studentName, studentEmail, setStudentEmail, setHome }) => {
     
     const posts = useSelector((state)=> state.posts);
     const history = useHistory();
@@ -46,7 +46,8 @@ const Form = ({currentId, setCurrentId, studentName, studentEmail, setStudentEma
                 {(studentEmail === "") ? history.push('/') : (
 
                 <Container>
-                                    
+                    
+                    <NavBar setUserEmail={setStudentEmail} setHome={setHome} />    
                                             
                     <FormDialog studentName={studentName} studentEmail={studentEmail} />
                     <Button

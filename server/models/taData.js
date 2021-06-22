@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
+import sha256 from 'sha256';
 
 const taSchema = mongoose.Schema({
-    name:String,
-    email:String,
+    name: { type: String, required: true },
+    hashedPassword: { type: String, required: true },
+    email: { type: String, required: true },  
     doubtsAccepted: {
         type: Number,
         default: 0,
@@ -15,10 +17,13 @@ const taSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
-    
-    
 })
 
-var TaSchema = mongoose.model('TaSchema', taSchema);
+taSchema.methods.comparePassword = function comparePassword(password) {
+    return this.hashedPassword === sha256(password);
+};
 
+var TaSchema = mongoose.model('TaSchema', taSchema);
 export default TaSchema;
+
+

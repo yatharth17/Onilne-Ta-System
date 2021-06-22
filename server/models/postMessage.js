@@ -5,6 +5,7 @@ const commentSchema = mongoose.Schema({
 })
 
 const postSchema = mongoose.Schema({
+    id: String,
     email: String,
     name: String,
     title: String,

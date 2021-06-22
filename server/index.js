@@ -3,15 +3,20 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import postRoutes from './routes/posts.js';
-
+import passport from 'passport';
+import {temp} from './temp.js';
+// const applyPassportStrategy=require('./store/passport')
+import {applyPassportStrategy} from './store/passport.js';
+import userController  from './controllers/userController.js';
 const app = express();
 
-
+applyPassportStrategy(passport);
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
-
+temp();
+app.use('/', userController);
 app.use('/posts', postRoutes); 
 
 const CONNECTION_URL = 'mongodb+srv://Yath_17:frontech@mern-tbcbt.mongodb.net/test?retryWrites=true&w=majority';

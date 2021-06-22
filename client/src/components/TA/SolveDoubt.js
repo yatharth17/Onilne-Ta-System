@@ -15,6 +15,7 @@ import moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
 import LongTextSnackbar from './Snackbar';
 import {addAnswer, addEscalatedDoubts, addResolvedDoubts} from '../../actions/posts'
+import NavBar from '../Ui/NavBar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function StandardCard({currentAcceptDoubtId, TaName, TaEmail, setTaEmail
-  , taId, setTaId}) {
+  , taId, setTaId, setHome}) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -57,13 +58,21 @@ export default function StandardCard({currentAcceptDoubtId, TaName, TaEmail, set
   const post = posts.filter(p => p._id === currentAcceptDoubtId);
   var date = new Date();
 
-
+  // console.log(TaEmail);
+  // console.log(TaName);
+  // console.log(taId);
 
   
 
   return (
-    <Container>
+      <>
 
+{
+      ( TaEmail === "" )? history.push('/'): (
+
+      <Container>
+        
+        <NavBar setUserEmail={setTaEmail} setHome={setHome} ></NavBar>
         <Button
             variant="contained"
             color="secondary"
@@ -238,6 +247,9 @@ export default function StandardCard({currentAcceptDoubtId, TaName, TaEmail, set
         </Grid>
 
     </Container>
-    
-  );
+    )}
+
+
+      </>
+      );
 }

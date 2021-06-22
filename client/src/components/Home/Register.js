@@ -26,16 +26,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FullWidthTabs(props) {
+export default function Register(props) {
   
-  const { setStudentName, setStudentEmail, setTaName, setTaEmail, setHome, setTeacherName, setTeacherEmail } = props;
+  const { setHome } = props;
 
   const [email, setEmail] = useState("");
   const [password, setPassWord] = useState("")
   const [type, setType] = useState("");
+  const [name, setName] = useState("");
 
   const classes = useStyles();
-  // const theme = useTheme();
   const history = useHistory();
 
 
@@ -44,50 +44,32 @@ export default function FullWidthTabs(props) {
     console.log(e);
 
     e.preventDefault();
-    Login();
+    Register();
 
-    function Login() {
-      axios.post("https://test-back-auth.herokuapp.com/login",{
-        email: email,
-        password: password,
-        type: type
-      })
+    function Register() {
+        axios.post("https://test-back-auth.herokuapp.com/register",{
+            name: name,
+            email: email,
+            password: password,
+            type: type
+        })
         .then(res => {
-          console.log("login: ", res);
-          console.log(type);
-
-          if (type === 'ta') {
-            setTaName(res.data.name);
-            setTaEmail(res.data.email);
-            setHome('/TA')
-            history.push('/TA');
-          }
-
-          else if (type === 'student') {
-            setStudentName(res.data.name)
-            setStudentEmail(res.data.email);
-            setHome('/student')
-            history.push('/student');
-          }
-          
-          else {
-            setTeacherName(res.data.name);
-            setTeacherEmail(res.data.email);
-            setHome('/TeachersDashboard')
-            history.push('/TeachersDashboard');
-          }
-
+            console.log(res);  
+            alert(`Registration Successful ! \nPlease Login.`);
+            setHome('/');
+            history.push('/');
         })
         .catch(err => {
-          console.log("Error: ", err);
-          alert(`Given account does not exist !`)
+            console.log("Error: ", err);
+            alert(`Could not register the given user !`);
+            e.target.reset();
         });
     }
   }
   
-  const paperStyles = {padding: 20, height: "500px", width: "400px", margin:"10vh auto"};
+  const paperStyles = {padding: 20, height: "550px", width: "400px", margin:"10vh auto"};
   const buttonStyle = {margin: "40px 0px 0px 0px", background: 'linear-gradient(to right, #A83279, #D38312)', color: "white", '&:hover': {backgroundColor: "#A93379"}};
-  const fieldStyle = {margin: "10px 0px 0px 0px"};
+  const fieldStyle = {margin: "10px 0px 5px 0px"};
 
   return (
     <div> 
@@ -95,16 +77,17 @@ export default function FullWidthTabs(props) {
         <Paper elevation={10} style={paperStyles}>
           <Grid align='center'>
             <Avatar alt="CN" src={CN} className={classes.large} />
-            <Typography gutterBottom variant="h5" style={{fontWeight:'600', color:'grey', paddingTop:'20px', paddingBottom:'40px'}}>
-              Doubts Resolution System
+            <Typography gutterBottom variant="h4" style={{fontWeight:'500', color:'grey', paddingTop:'20px', paddingBottom:'10px'}}>
+              Registration 
             </Typography>
             
             <form style={{width: "93%"}} onSubmit={e => _handleSubmit(e)}>
           
+              <TextField fullWidth style={fieldStyle} value={name} onChange={e=>setName(e.target.value)} variant='outlined' label='Name' size='medium' required></TextField>
               <TextField fullWidth style={fieldStyle} value={email} onChange={e=>setEmail(e.target.value)} variant='outlined' label='Email' size='medium' required></TextField>
               <TextField fullWidth style={fieldStyle} type="password" value={password} onChange={e=>setPassWord(e.target.value)} variant='outlined' label='Password' size='medium' required></TextField>
 
-              <FormControl style={{width: "100%", marginTop: "20px"}}>
+              <FormControl style={{width: "100%", marginTop: '10px'}}>
                 <InputLabel id='select-type' style={{ marginLeft: '10px'}}>Select the User Type</InputLabel>
 
                 <Select fullWidth variant="standard" value={type} onChange={e=>setType(e.target.value)} labelId= 'select-type' required>
@@ -116,11 +99,11 @@ export default function FullWidthTabs(props) {
               </FormControl>
 
               <FormControl style={{width: "100%"}}>
-                <Button size='large' type='submit' fullWidth variant="contained" style={buttonStyle}>Login</Button>
+                <Button size='large' type='submit' fullWidth variant="contained" style={buttonStyle}>Register</Button>
                 <FormHelperText style={{marginTop: "10px", marginRight: "5px", alignSelf: 'flex-end'}}>
-                  Not Registered? 
-                  <Link to='/register' style={{marginLeft: "5px", color: "#D07D19"}}>
-                    Sign Up!
+                  Already Registered? 
+                  <Link to='/' style={{marginLeft: "5px", color: "#D07D19"}}>
+                    Sign In!
                   </Link>
                 </FormHelperText>
               </FormControl>

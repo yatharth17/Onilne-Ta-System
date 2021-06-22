@@ -10,7 +10,7 @@ import StandardCard from "./standardCard"
 import Typography from '@material-ui/core/Typography';
 import {useDispatch, useSelector} from 'react-redux';
 import {getPosts, getTaData, createTaData} from '../../actions/posts'
-
+import NavBar from '../Ui/NavBar'
 
  
 
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme)=>({
 
 
 const TA = ({currentAcceptDoubtId, setCurrentAcceptDoubtId,
-     TaEmail, setTaEmail, TaName, taId, setTaId}) => {
+     TaEmail, setTaEmail, TaName, taId, setTaId, setHome }) => {
     
     ;
     const posts = useSelector((state)=> state.posts);
@@ -49,14 +49,17 @@ const TA = ({currentAcceptDoubtId, setCurrentAcceptDoubtId,
             
         }
     }
-    auth(TaEmail);     
+    
+    if(TaEmail !== "")
+        auth(TaEmail);     
     
     useEffect(() => {
         dispatch(getPosts());
         dispatch(getTaData());
 
-    }, []);
+    }, [dispatch]);
     
+    // render() {
 
         const classes = useStyles();
         return (
@@ -64,6 +67,7 @@ const TA = ({currentAcceptDoubtId, setCurrentAcceptDoubtId,
                 {(TaEmail === "") ? history.push('/') : (
 
                     <Container>
+                        <NavBar setUserEmail={setTaEmail} setHome={setHome} />    
                         <Button
                                 variant="contained"
                                 color="secondary"
