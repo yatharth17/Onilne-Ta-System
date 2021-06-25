@@ -15,7 +15,7 @@ router.post('/ta', createTaData);
 router.patch('/:id/addAcceptedDoubts', addAcceptedDoubts);
 router.patch('/:id/addEscalatedDoubts', addEscalatedDoubts);
 router.patch('/:id/addResolvedDoubts', addResolvedDoubts);
-router.patch('/:email/checkEmail', checkEmail);
+
 
 
 export default router;

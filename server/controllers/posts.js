@@ -100,13 +100,6 @@ export const addAcceptedDoubts = async (req, res) => {
     res.json(updatedPost);
 }
 
-export const checkEmail = async (req, res) => {
-    const {email} = req.params;
-    const post = await TaSchema.findOne({email:email});
-        
-    res.json(post);
-}
-
 export const addEscalatedDoubts = async (req, res) => {
     const { id} = req.params;
 
