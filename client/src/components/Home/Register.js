@@ -27,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Register(props) {
-  
-  const { setHome } = props;
 
   const [email, setEmail] = useState("");
   const [password, setPassWord] = useState("")
@@ -56,7 +54,6 @@ export default function Register(props) {
         .then(res => {
             console.log(res);  
             alert(`Registration Successful ! \nPlease Login.`);
-            setHome('/');
             history.push('/');
         })
         .catch(err => {
@@ -84,8 +81,8 @@ export default function Register(props) {
             <form style={{width: "93%"}} onSubmit={e => _handleSubmit(e)}>
           
               <TextField fullWidth style={fieldStyle} value={name} onChange={e=>setName(e.target.value)} variant='outlined' label='Name' size='medium' required></TextField>
-              <TextField fullWidth style={fieldStyle} value={email} onChange={e=>setEmail(e.target.value)} variant='outlined' label='Email' size='medium' required></TextField>
-              <TextField fullWidth style={fieldStyle} type="password" value={password} onChange={e=>setPassWord(e.target.value)} variant='outlined' label='Password' size='medium' required></TextField>
+              <TextField fullWidth style={fieldStyle} type="email" value={email} onChange={e=>setEmail(e.target.value)} variant='outlined' label='Email' size='medium' required></TextField>
+              <TextField fullWidth style={fieldStyle} type="password" inputProps={{minlength:8}} value={password} onChange={e=>setPassWord(e.target.value)} variant='outlined' label='Password' size='medium' required></TextField>
 
               <FormControl style={{width: "100%", marginTop: '10px'}}>
                 <InputLabel id='select-type' style={{ marginLeft: '10px'}}>Select the User Type</InputLabel>

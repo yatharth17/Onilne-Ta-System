@@ -123,8 +123,12 @@ export default function StandardCard({post, currentId, setCurrentId}) {
                             className={classes.button}
                             endIcon={<SendIcon/>}
                             onClick={()=>{ 
-                              dispatch(addComment(post._id, {comment:currentComment}));
+                              if(currentComment==="") alert('Comment Cannot be empty')
+                              else{
+                                dispatch(addComment(post._id, {comment:currentComment}));
                               setComment("");
+                              }
+                              
                             
                             }}
                             type="submit"

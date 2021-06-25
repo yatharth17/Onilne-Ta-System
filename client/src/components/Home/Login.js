@@ -1,4 +1,6 @@
 import React,{useState} from 'react';
+import { useDispatch } from 'react-redux';
+import {setUser} from '../../actions/user'
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 // import GoogleLogin from 'react-google-login';
@@ -26,23 +28,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FullWidthTabs(props) {
-  
-  const { setStudentName, setStudentEmail, setTaName, setTaEmail, setHome, setTeacherName, setTeacherEmail } = props;
-
+export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassWord] = useState("")
   const [type, setType] = useState("");
 
   const classes = useStyles();
-  // const theme = useTheme();
   const history = useHistory();
-
+  
+  const dispatch = useDispatch();
 
   const _handleSubmit=(e)=>{
     
-    console.log(e);
-
     e.preventDefault();
     Login();
 
@@ -53,27 +50,28 @@ export default function FullWidthTabs(props) {
         type: type
       })
         .then(res => {
-          console.log("login: ", res);
-          console.log(type);
-
+          
+          const dispatchState = (data, home, type) => {
+              dispatch(setUser({
+                name: data.name,
+                email: data.email,
+                type: type,
+                home: home,
+            }))
+          }
+          
           if (type === 'ta') {
-            setTaName(res.data.name);
-            setTaEmail(res.data.email);
-            setHome('/TA')
+            dispatchState(res.data, '/TA', type);
             history.push('/TA');
           }
 
           else if (type === 'student') {
-            setStudentName(res.data.name)
-            setStudentEmail(res.data.email);
-            setHome('/student')
+            dispatchState(res.data, '/student', type);
             history.push('/student');
           }
           
           else {
-            setTeacherName(res.data.name);
-            setTeacherEmail(res.data.email);
-            setHome('/TeachersDashboard')
+            dispatchState(res.data, '/TeachersDashboard', type);
             history.push('/TeachersDashboard');
           }
 
@@ -101,8 +99,8 @@ export default function FullWidthTabs(props) {
             
             <form style={{width: "93%"}} onSubmit={e => _handleSubmit(e)}>
           
-              <TextField fullWidth style={fieldStyle} value={email} onChange={e=>setEmail(e.target.value)} variant='outlined' label='Email' size='medium' required></TextField>
-              <TextField fullWidth style={fieldStyle} type="password" value={password} onChange={e=>setPassWord(e.target.value)} variant='outlined' label='Password' size='medium' required></TextField>
+              <TextField fullWidth style={fieldStyle} type="email" value={email} onChange={e=>setEmail(e.target.value)} variant='outlined' label='Email' size='medium' required></TextField>
+              <TextField fullWidth style={fieldStyle} type="password" inputProps={{minlength:8}} value={password} onChange={e=>setPassWord(e.target.value)} variant='outlined' label='Password' size='medium' required></TextField>
 
               <FormControl style={{width: "100%", marginTop: "20px"}}>
                 <InputLabel id='select-type' style={{ marginLeft: '10px'}}>Select the User Type</InputLabel>

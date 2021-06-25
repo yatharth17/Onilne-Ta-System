@@ -6,7 +6,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { reducers } from './reducers';
 import './index.css';
-
+// import logger from 'redux-logger'
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
 ReactDOM.render(

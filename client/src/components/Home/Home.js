@@ -1,33 +1,26 @@
 import React from 'react'
-import FullWidthTabs from './TabPanel'
+import { useSelector } from 'react-redux'
+import Login from './Login'
 import Register from './Register'
-// import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-export default function Home({
-     setStudentName, setStudentEmail,
-     setTaName, setTaEmail, type, home, setHome, 
-     setTeacherName, setTeacherEmail }) {
+export default function Home({ type }) {
     
-    // const history = useHistory;
+    const history = useHistory();
+    const user_type=useSelector(state=>state.setuser.type)
+    console.log(user_type)
+    if(user_type==="student") history.push('/student')
+    if(user_type==="ta") history.push('/TA')
+    if(user_type==="teacher") history.push('/TeachersDashboard')
+    
     return (
         <div>
-            {/* {console.log(home)} */}
             {
                 // home !== '/'?
                 // null://history.push(home):
-                type === 'login'?
-                    <FullWidthTabs 
-                    setStudentName={setStudentName}
-                    setStudentEmail={setStudentEmail}
-                    setTaName={setTaName}
-                    setTaEmail={setTaEmail}
-                    setHome={setHome}
-                    setTeacherName={setTeacherName}
-                    setTeacherEmail={setTeacherEmail}
-                    />:
-                    <Register 
-                    setHome={setHome}
-                    />
+                type === 'L'?
+                    <Login />:
+                    <Register />
             }
         </div>
     )

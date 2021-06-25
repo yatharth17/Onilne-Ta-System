@@ -22,15 +22,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     marginBottom:'20px',
-    
-    
   },
   paper: {
     padding: theme.spacing(2),
     margin: 'auto',
-    maxWidth: 1000,
-    
-    
+    maxWidth: 1000,  
   },
   image: {
     width: 128,
@@ -44,203 +40,166 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function StandardCard({currentAcceptDoubtId, TaName, TaEmail, setTaEmail
-  , taId, setTaId, setHome}) {
+
+export default function StandardCard({ currentAcceptDoubtId, 
+   taId }) {
+
   const classes = useStyles();
   const history = useHistory();
-
   const dispatch = useDispatch();
 
   const [currentAnswer, setAnswer] = useState("");
 
   const posts = useSelector((state)=> state.posts);
+  const type = useSelector(state => state.setuser.type);
+  const name = useSelector(state => state.setuser.name);
 
   const post = posts.filter(p => p._id === currentAcceptDoubtId);
-  var date = new Date();
-
-  // console.log(TaEmail);
-  // console.log(TaName);
-  // console.log(taId);
-
   
+  var date = new Date();
 
   return (
       <>
-
-{
-      ( TaEmail === "" )? history.push('/'): (
+    {
+      ( type !== "ta" )? history.push('/'): (
 
       <Container>
-        
-        <NavBar setUserEmail={setTaEmail} setHome={setHome} ></NavBar>
-        <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            startIcon={<ExitToAppIcon />}
-            style={{float:'right'}}
-            onClick={()=> {
-              setTaEmail("");
-                    
-            }}
-        >
-            Logout
-        </Button>
-
-
-        <Grid style={{marginTop:'70px',}}>
-
-        {(TaEmail === "") ? history.push('/') : (
-
+        <NavBar />    
+        <Grid style={{ marginTop:'70px' }}>
+        {
+          (type !== "ta") ? history.push('/') : (
           <Typography gutterBottom variant="h4" style={{color:'white', marginLeft:'90px', marginBottom:'40px'}}>
-          Solve Doubts 
+            Solve Doubts 
           </Typography>
+
         )}
-
-
 
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <Grid container spacing={2}>
-                
-                <Grid item xs={12} sm container>
+      
+                  <Grid item xs={12} sm container>
                     <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
                         <Typography gutterBottom variant="h4">
-                        Title: {post[0].title}
+                          Title: {post[0].title}
                         </Typography>
+                        
                         <Typography variant="h6" gutterBottom>
-                        Description: {post[0].description}
+                          Description: {post[0].description}
                         </Typography>
 
-                        {post[0].answer !== "" ? (<Typography variant="body2" gutterBottom>
-                          Answer: {post[0].answer} <br/>
-                          Answered By: {post[0].taName} {moment(post[0].ansTime).fromNow()}
-                        </Typography>):(<Typography variant="body2" gutterBottom>
+                        {
+                          post[0].answer !== "" ? (
                           
-                        </Typography>)}
-
+                          <Typography variant="body2" gutterBottom>
+                            Answer: {post[0].answer} <br/>
+                            Answered By: {post[0].taName} {moment(post[0].ansTime).fromNow()}
+                          </Typography>):(
+                          
+                          <Typography variant="body2" gutterBottom> 
+                          </Typography>)
+                        }
 
                         <Typography  style={{float:'right'}} variant="body2" color="textSecondary">
-                        Asked by: {post[0].name} {moment(post[0].postTime).fromNow()}
+                          Asked by: {post[0].name} {moment(post[0].postTime).fromNow()}
                         </Typography>
+                    
                     </Grid>
-                    <Divider/>
+                    <Divider />
+
                     <Typography variant="body2" color="textSecondary">
                         {post[0].comments.length} Comment
                     </Typography>
+                    
                     <Grid item>
-                
-              
-
                     {
-                        (post[0].comments.map(comment => (
-                        
-                        <LongTextSnackbar msg={comment.text} />
-                        ))) 
-                        
-
+                        (
+                          post[0].comments.map(comment => (
+                            <LongTextSnackbar msg={comment.text} />
+                          ))
+                        )
                     }
-
-
-                    
                     </Grid> 
-
-                    
-                        <Grid item>
-
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="mainInput"
-                                label="Answer"
-                                type="text"
-                                fullWidth
-                                value={currentAnswer}
-                                onChange={(e)=>setAnswer(e.target.value)}
-                                
-                                
-                            />
-                            {post[0].answer === "" ? (<Button
-                                
-                                color="primary"
-                                className={classes.button}
-                                endIcon={<SendIcon/>}
-                                onClick={()=>{ 
-                                    if(currentAnswer!=="")
-                                    dispatch(addAnswer(currentAcceptDoubtId,
-                                       {answer:currentAnswer,taName:TaName,ansTime:date}));
-                                    dispatch(addResolvedDoubts(taId));
-
-                                    setAnswer("");
-                                  
-                                  }}
-                                type="submit"
-                                
-                            >
-                                Answer
-                            </Button>)
-                            :
-                            (<Button
-                                
-                                color="primary"
-                                className={classes.button}
-                                endIcon={<SendIcon/>}
-                                disabled
-                                type="submit"
-                                
-                            >
-                                Answer
-                            </Button>) }
+                      <Grid item>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="mainInput"
+                            label="Answer"
+                            type="text"
+                            fullWidth
+                            value={currentAnswer}
+                            onChange={(e)=>setAnswer(e.target.value)}
                             
-                        </Grid>
+                            
+                        />
+                        {
+                          post[0].answer === "" ? (
+                          
+                          <Button      
+                            color="primary"
+                            className={classes.button}
+                            endIcon={<SendIcon/>}
+                            onClick={() => { 
+                                if(currentAnswer!=="")
+                                  dispatch(addAnswer(currentAcceptDoubtId, {
+                                    answer:currentAnswer,
+                                    taName:name,
+                                    ansTime:date 
+                                  }));
+                                  dispatch(addResolvedDoubts(taId));
+                                  setAnswer("");
+                              }
+                            }
+                            type="submit"  
+                          >
+                            Answer
+                          </Button>) : (
+                          <Button      
+                            color="primary"
+                            className={classes.button}
+                            endIcon={<SendIcon/>}
+                            disabled
+                            type="submit"
+                            >
+                              Answer
+                          </Button>
+                          ) 
+                        }    
+                      </Grid>
                     
-
-
                     </Grid>
                     <Grid item>
-
-                            
-
-
-                            {post[0].answer === "" ? (
-                              <Link to="/TA" style={{ textDecoration: 'none', color: "inherit" }}>
-                                <Button
-                                          variant="outlined"
-                                          color="primary"
-                                          className={classes.button}
-                                          onClick={()=> {
-                                            dispatch(addEscalatedDoubts(taId));  
-                                                  
-                                          }}
-                                          
-                                  >
-                                          Escalate
-                                </Button>
-                              </Link>):
-                              (<Link to="/TA" style={{ textDecoration: 'none', color: "inherit" }}>
-                              <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        className={classes.button}
-                                        
-                                >
-                                        Go back to doubts!
-                              </Button>
-                            </Link>)}
-
-
-
-
-
-                              
-                            
-
-                            
+                      {
+                        post[0].answer === "" ? (
+                        
+                        <Link to="/TA" style={{ textDecoration: 'none', color: "inherit" }}>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            className={classes.button}
+                            onClick={()=> {
+                              dispatch(addEscalatedDoubts(taId));          
+                            }}
+                          >
+                            Escalate
+                          </Button>
+                        </Link> ) : (
+                        
+                        <Link to="/TA" style={{ textDecoration: 'none', color: "inherit" }}>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            className={classes.button}    
+                          >
+                            Go back to doubts!
+                          </Button>
+                        </Link>
+                        )
+                      }
                     </Grid>
-                    
-                </Grid>
-                
+                  </Grid>
                 </Grid>
             </Paper>
         </div>
@@ -248,8 +207,6 @@ export default function StandardCard({currentAcceptDoubtId, TaName, TaEmail, set
 
     </Container>
     )}
-
-
-      </>
-      );
+  </>
+  );
 }

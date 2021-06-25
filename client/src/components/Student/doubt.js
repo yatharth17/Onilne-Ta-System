@@ -31,12 +31,18 @@ export default function FormDialog({studentName, studentEmail}) {
   });
 
   const dispatch = useDispatch();
-  
+  console.log(postData)
   const handleSubmit = (e) => {
 
       e.preventDefault(); 
-
-      dispatch(createPost(postData));
+      console.log(postData)
+      if(postData.title && postData.description){
+        console.log("Hello")
+        dispatch(createPost(postData));
+      }
+      else{
+        alert('Please fill both title and description')
+      }
   }
 
   // console.log(posts); 

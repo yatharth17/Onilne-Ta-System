@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import LongTextSnackbar from './SnackBar'
 import {useDispatch, useSelector} from 'react-redux';
-import {getTaData} from '../../actions/posts'
+import {getPosts, getTaData} from '../../actions/posts'
 import { useHistory } from "react-router-dom";
 import NavBar from "../Ui/NavBar";
 
@@ -24,15 +24,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TeachersDashboard = (props) => {
-
-    const {TeacherEmail, setTeacherEmail, home, setHome} = props;
-    console.log(home)
+    
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
-
+    useEffect(()=>{
+        dispatch(getPosts())
+    },[dispatch])
+    const type = useSelector(state => state.setuser.type);
+    const home = useSelector(state => state.setuser.home);
     const taS = useSelector((state)=> state.ta);
+    const posts=useSelector(state=>state.posts)
+    const average_time=(posts)=>{
+        var ans=0;
+        for(let i=0;i<posts.length;i++){
+            let x=posts[i].postTime
+            let y=posts[i].ansTime
+            let d1=new Date(x);
+            let d2=new Date(y);
+            // console.log(d1,d2)
+            ans+=Math.abs(d1.getMinutes()-d2.getMinutes())
+        }
+        return Math.floor(ans/posts.length)
 
+    } 
+    const ans=average_time(posts)
     var doubtsAsked = taS.reduce(function(tot, arr) { 
         // return the sum with previous value
         return tot + arr.doubtsAccepted;
@@ -51,8 +67,6 @@ const TeachersDashboard = (props) => {
     
     },0);
     
-    console.log(doubtsAsked," ", doubtsResolved," ",doubtsEscalated);
-
 
     useEffect(() => {
         dispatch(getTaData());
@@ -61,13 +75,10 @@ const TeachersDashboard = (props) => {
  
   return (
     <>
-        {(TeacherEmail === "") ? history.push('/') : (
+        {(type !== "teacher") ? history.push('/') : (
     
         <div>
-            <NavBar  
-                setUserEmail={setTeacherEmail}
-                setHome={setHome}
-            />
+            <NavBar />
             <Typography gutterBottom variant="h4" style={{color:'white', marginLeft:'100px', marginBottom:'10px', marginTop:'40px'}}>
                 Dashboard
             </Typography>
@@ -77,7 +88,7 @@ const TeachersDashboard = (props) => {
                 <Paper elevation={3} >
                     <div className={classes1.card2}>
                         <div className={classes1.card3}>
-                            <div className={classes1.first}>{doubtsAsked}</div>
+                            <div className={classes1.first}>{posts.length}</div>
                             <div className={classes1.second}>Doubts Asked</div>
                         </div>
                     </div>
@@ -101,8 +112,8 @@ const TeachersDashboard = (props) => {
                 <Paper elevation={3} >
                     <div className={classes1.card2}>
                         <div className={classes1.card3}>
-                            <div className={classes1.first}>10</div>
-                            <div className={classes1.second}>Avg. Doubt Resolution Time</div>
+                            <div className={classes1.first}>{ans}</div>
+                            <div className={classes1.second}>Avg. Doubt Resolution Time(Minutes)</div>
                         </div>
                     </div>
                 </Paper>

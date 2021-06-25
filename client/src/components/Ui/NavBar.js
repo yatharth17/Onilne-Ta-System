@@ -5,6 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import { useDispatch } from 'react-redux';
+import { UnsetUser } from '../../actions/user';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,11 +27,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NavBar(props) {
   const classes = useStyles();
-  const { setUserEmail, setHome } = props;
+  const dispatch = useDispatch();
 
   const handleChange = () => {
-    setUserEmail('');
-    setHome('/');
+    dispatch(UnsetUser());
   }
 
   return (
