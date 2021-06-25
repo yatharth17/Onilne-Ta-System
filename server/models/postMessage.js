@@ -12,10 +12,6 @@ const postSchema = mongoose.Schema({
     description: String,
     answer: String,
     taName:String,
-    likeCount: {
-        type: Number,
-        default: 0,
-    },
     postTime: {
         type: Date,
         default: new Date(),
